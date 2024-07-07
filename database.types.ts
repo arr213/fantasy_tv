@@ -12,25 +12,22 @@ export type Database = {
       app_user: {
         Row: {
           created_at: string
-          email: string | null
+          email: string
           first_name: string | null
-          id: number
           last_name: string | null
           profile_url: string | null
         }
         Insert: {
           created_at?: string
-          email?: string | null
+          email: string
           first_name?: string | null
-          id?: number
           last_name?: string | null
           profile_url?: string | null
         }
         Update: {
           created_at?: string
-          email?: string | null
+          email?: string
           first_name?: string | null
-          id?: number
           last_name?: string | null
           profile_url?: string | null
         }
@@ -201,6 +198,7 @@ export type Database = {
           id: number
           league_banner_url: string | null
           league_name: string
+          league_status: Database["public"]["Enums"]["league_status"]
           payment_info: string | null
           rule_set: string | null
           season_id: number
@@ -210,6 +208,7 @@ export type Database = {
           id?: number
           league_banner_url?: string | null
           league_name: string
+          league_status?: Database["public"]["Enums"]["league_status"]
           payment_info?: string | null
           rule_set?: string | null
           season_id: number
@@ -219,6 +218,7 @@ export type Database = {
           id?: number
           league_banner_url?: string | null
           league_name?: string
+          league_status?: Database["public"]["Enums"]["league_status"]
           payment_info?: string | null
           rule_set?: string | null
           season_id?: number
@@ -336,7 +336,7 @@ export type Database = {
           created_at: string
           id: number
           league_id: number | null
-          manager_id: number | null
+          manager_email: string | null
           team_name: string | null
         }
         Insert: {
@@ -344,7 +344,7 @@ export type Database = {
           created_at?: string
           id?: number
           league_id?: number | null
-          manager_id?: number | null
+          manager_email?: string | null
           team_name?: string | null
         }
         Update: {
@@ -352,7 +352,7 @@ export type Database = {
           created_at?: string
           id?: number
           league_id?: number | null
-          manager_id?: number | null
+          manager_email?: string | null
           team_name?: string | null
         }
         Relationships: [
@@ -364,11 +364,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "team_manager_fkey"
-            columns: ["manager_id"]
+            foreignKeyName: "team_manager_email_fkey"
+            columns: ["manager_email"]
             isOneToOne: false
             referencedRelation: "app_user"
-            referencedColumns: ["id"]
+            referencedColumns: ["email"]
           },
         ]
       }
@@ -445,10 +445,57 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_available_leagues: {
+        Args: {
+          user_email: string
+        }
+        Returns: {
+          created_at: string
+          id: number
+          league_banner_url: string | null
+          league_name: string
+          league_status: Database["public"]["Enums"]["league_status"]
+          payment_info: string | null
+          rule_set: string | null
+          season_id: number
+        }[]
+      }
+      get_my_leagues: {
+        Args: {
+          user_email: string
+        }
+        Returns: {
+          created_at: string
+          id: number
+          league_banner_url: string | null
+          league_name: string
+          league_status: Database["public"]["Enums"]["league_status"]
+          payment_info: string | null
+          rule_set: string | null
+          season_id: number
+        }[]
+      }
+      get_team_summary: {
+        Args: {
+          the_league_id: number
+        }
+        Returns: {
+          team_name: string
+          team_id: number
+          league_name: string
+          league_id: number
+          team_manager_first_name: string
+          team_manager_last_name: string
+          team_manager_email: string
+          team_line_up_so_far: number[]
+          remaining_player_count: number
+          mistake_count: number
+          rounds_with_mistakes: number
+        }[]
+      }
     }
     Enums: {
-      [_ in never]: never
+      league_status: "open_signup" | "private_signup" | "current" | "finished"
     }
     CompositeTypes: {
       [_ in never]: never

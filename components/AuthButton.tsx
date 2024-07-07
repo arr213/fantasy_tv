@@ -1,6 +1,11 @@
 import { createClient } from "@/utils/supabase/server";
+import { AccountCircle } from "@mui/icons-material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import { User } from "@supabase/auth-js";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import React from "react";
+import { UserMenu } from "./UserMenu";
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -11,21 +16,18 @@ export default async function AuthButton() {
 
   const signOut = async () => {
     "use server";
-
     const supabase = createClient();
     await supabase.auth.signOut();
     return redirect("/login");
   };
 
+  async function navigateToProfile() {
+    'use server';
+    return redirect("/profile");
+  }
+
   return user ? (
-    <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-          Logout
-        </button>
-      </form>
-    </div>
+    <UserMenu signOut={signOut} navigateToProfile={navigateToProfile} />
   ) : (
     <Link
       href="/login"
@@ -35,3 +37,8 @@ export default async function AuthButton() {
     </Link>
   );
 }
+
+
+
+
+
