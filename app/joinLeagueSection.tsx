@@ -5,7 +5,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { joinLeague } from "@/actions/join_league";
 
 export default function JoinLeagueSection({app_user, joinableLeagues, joinLeague}) {
-    if (!app_user || !joinableLeagues || !joinLeague)  return <></>;
+    if (!app_user || !joinableLeagues || !joinLeague || !joinableLeagues.length)  return <></>;
     return (
       <div>
         <h2 className="font-bold text-4xl mb-4">Join a league:</h2>

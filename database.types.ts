@@ -113,21 +113,18 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          id: number
           type_display_name: string
           type_name: string
         }
         Insert: {
           created_at?: string
           description?: string | null
-          id?: number
           type_display_name: string
           type_name: string
         }
         Update: {
           created_at?: string
           description?: string | null
-          id?: number
           type_display_name?: string
           type_name?: string
         }
@@ -233,6 +230,42 @@ export type Database = {
           },
         ]
       }
+      league_admin: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: number
+          league_id: number | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: number
+          league_id?: number | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: number
+          league_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "league_admin_email_fkey"
+            columns: ["email"]
+            isOneToOne: false
+            referencedRelation: "app_user"
+            referencedColumns: ["email"]
+          },
+          {
+            foreignKeyName: "league_admin_league_id_fkey"
+            columns: ["league_id"]
+            isOneToOne: false
+            referencedRelation: "league"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       round: {
         Row: {
           created_at: string
@@ -330,29 +363,75 @@ export type Database = {
         }
         Relationships: []
       }
+      survival_record: {
+        Row: {
+          contestant_id: number | null
+          created_at: string
+          id: number
+          round_id: number
+          team_id: number
+        }
+        Insert: {
+          contestant_id?: number | null
+          created_at?: string
+          id?: number
+          round_id: number
+          team_id: number
+        }
+        Update: {
+          contestant_id?: number | null
+          created_at?: string
+          id?: number
+          round_id?: number
+          team_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "survival_record_contestant_id_fkey"
+            columns: ["contestant_id"]
+            isOneToOne: false
+            referencedRelation: "contestant"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survival_record_round_id_fkey"
+            columns: ["round_id"]
+            isOneToOne: false
+            referencedRelation: "round"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survival_record_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "team"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team: {
         Row: {
           color: string | null
           created_at: string
           id: number
-          league_id: number | null
-          manager_email: string | null
+          league_id: number
+          manager_email: string
           team_name: string | null
         }
         Insert: {
           color?: string | null
           created_at?: string
           id?: number
-          league_id?: number | null
-          manager_email?: string | null
+          league_id: number
+          manager_email: string
           team_name?: string | null
         }
         Update: {
           color?: string | null
           created_at?: string
           id?: number
-          league_id?: number | null
-          manager_email?: string | null
+          league_id?: number
+          manager_email?: string
           team_name?: string | null
         }
         Relationships: [
@@ -374,19 +453,16 @@ export type Database = {
       }
       team_lineup: {
         Row: {
-          contestant_ids: number[]
           created_at: string
           id: number
           team_id: number
         }
         Insert: {
-          contestant_ids: number[]
           created_at?: string
           id?: number
           team_id: number
         }
         Update: {
-          contestant_ids?: number[]
           created_at?: string
           id?: number
           team_id?: number
@@ -445,6 +521,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_team_lineup: {
+        Args: {
+          the_team_id: number
+          contestant_ids: number[]
+        }
+        Returns: undefined
+      }
       get_available_leagues: {
         Args: {
           user_email: string
@@ -460,6 +543,20 @@ export type Database = {
           season_id: number
         }[]
       }
+      get_contestants: {
+        Args: {
+          the_league_id: number
+        }
+        Returns: {
+          contestant_id: number
+          first_name: string
+          last_name: string
+          display_name: string
+          season_id: number
+          status: string
+          rank: number
+        }[]
+      }
       get_my_leagues: {
         Args: {
           user_email: string
@@ -473,6 +570,50 @@ export type Database = {
           payment_info: string | null
           rule_set: string | null
           season_id: number
+        }[]
+      }
+      get_rounds_with_evictions: {
+        Args: {
+          the_league_id: number
+        }
+        Returns: {
+          round_id: number
+          season_id: number
+          round_number: number
+          display_name: string
+          deadline_date_time: string
+          evicted_contestant: number
+        }[]
+      }
+      get_team_lineup: {
+        Args: {
+          the_league_id: number
+          team_manager_email: string
+          deadline?: string
+        }
+        Returns: {
+          lineup_id: number
+          lineup_created_at: string
+          team_id: number
+          contestant_ids: number[]
+        }[]
+      }
+      get_team_submissions: {
+        Args: {
+          the_team_id: number
+        }
+        Returns: {
+          round_id: number
+          round_number: number
+          round_display_name: string
+          deadline_date_time: string
+          contestant_id: number
+          contestant_first_name: string
+          contestant_last_name: string
+          contestant_display_name: string
+          contestant_status: string
+          contestant_rank: number
+          is_correct: boolean
         }[]
       }
       get_team_summary: {

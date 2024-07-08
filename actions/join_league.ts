@@ -7,11 +7,8 @@ const nounList = ['Aces','Bandits','Comp-Beasts','Champs','Crew','Defenders','Ex
 
 export async function joinLeague({user_email, league_id, user_first_name}: {user_email: string, league_id: number, user_first_name: string}) {
   "use server";
-  console.log(1)
   const supabase = createClient();
-  console.log(2)
   const { data: { user } } = await supabase.auth.getUser();
-  console.log(3)
   const {error} = await supabase.from("team").insert({
     team_name: `${user_first_name}'s ${_.sample(adjectiveList)} ${_.sample(nounList)}`,
     league_id: league_id,
@@ -22,6 +19,5 @@ export async function joinLeague({user_email, league_id, user_first_name}: {user
     throw "Error joining the league. Please try again."
   }
 
-  console.log(4);
   return redirect(`/league/${league_id}`);
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createClient } from "@/utils/supabase/server";
-import { Box, Link, Tab, Tabs } from '@mui/material';
+import { AppBar, Box, Button, Link, Tab, Tabs, Toolbar, Typography } from '@mui/material';
 
 export default async function LeagueHomePage({params}: { params: {league_id: string}}) {
     const {league_id} = params;
@@ -18,12 +18,13 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
     // console.log("Teams", teams);
 
     return <div>
-        <section className="flex justify-between mb-10">
 
-        <h1 className='text-2xl'>{league?.league_name}</h1>
-        </section>
+        <header className="flex justify-between mb-10">
 
-        <section>
+            <h1 className='text-2xl'>Welcome to {league?.league_name}!</h1>
+        </header>
+
+        <section className="bg-slate-300">
             <h1 className='text-xl'>League Standings</h1>
             <div className='grid grid-cols-2 gap-3'>
                 <h2>Team</h2>
