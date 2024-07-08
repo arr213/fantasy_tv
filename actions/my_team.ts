@@ -1,8 +1,12 @@
+import { Database } from "@/database.types";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function saveTeamName(team, formData: FormData) {
+export async function saveTeamName(
+    team: Database['public']['Tables']['team']['Row'], 
+    formData: FormData
+) {
     "use server";
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -13,7 +17,10 @@ export async function saveTeamName(team, formData: FormData) {
     revalidatePath(`/league/${team.league_id}/my_team`);
 }
 
-export async function saveLineup(team, lineup) {
+export async function saveLineup(
+    team: Database['public']['Tables']['team']['Row'], 
+    lineup: Database['public']['Functions']['get_contestants']['Returns']
+) {
     "use server";
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();

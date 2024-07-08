@@ -8,7 +8,7 @@ export async function POST() {
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: 'Fantasy TV <arr213@gmail.com>',
+      from: 'Fantasy Big Brother <arr213@gmail.com>',
       to: ['arr213@gmail.com'],
       subject: 'Fantasy Big Brother League Update',
       html: '<strong>it works!</strong>',

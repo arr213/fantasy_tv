@@ -35,7 +35,7 @@ export default async function Index() {
 
   const {data: myLeagues, error: myLeaguesError} = await supabase.rpc('get_my_leagues', {user_email: user.email!});
   const {data: openLeagues, error: openLeaguesError} = await supabase.from('league').select('*').eq('league_status', 'open_signup');
-  const joinableLeagues = openLeagues?.filter(league => !myLeagues?.find(myLeague => myLeague.id === league.id));
+  const joinableLeagues = openLeagues?.filter(league => !myLeagues?.find(myLeague => myLeague.id === league.id)) || [];
 
 
   if (myLeaguesError) {

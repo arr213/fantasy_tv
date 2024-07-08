@@ -3,8 +3,13 @@
 import { Card, Icon, Paper } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { joinLeague } from "@/actions/join_league";
+import { Database } from "@/database.types";
 
-export default function JoinLeagueSection({app_user, joinableLeagues, joinLeague}) {
+export default function JoinLeagueSection({app_user, joinableLeagues, joinLeague}:{
+    app_user: Database['public']['Tables']['app_user']['Row'];
+    joinableLeagues: Database['public']['Tables']['league']['Row'][];
+    joinLeague: (o: {user_email: string, league_id: number, user_first_name: string}) => Promise<never>;
+}) {
     if (!app_user || !joinableLeagues || !joinLeague || !joinableLeagues.length)  return <></>;
     return (
       <div>
