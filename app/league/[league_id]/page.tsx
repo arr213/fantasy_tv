@@ -24,8 +24,8 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
             <h1 className='text-2xl'>Welcome to {league?.league_name}!</h1>
         </header>
 
-        <section className="bg-slate-300">
-            <h1 className='text-xl'>League Standings</h1>
+        <section className="bg-slate-300 p-10 rounded-lg">
+            <h1 className='text-2xl mb-5'>League Standings</h1>
             <div className='grid grid-cols-2 gap-3'>
                 <h2>Team</h2>
                 <h2>Manager</h2>
