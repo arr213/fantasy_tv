@@ -178,3 +178,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+
+
+CREATE OR REPLACE FUNCTION create_team_lineup(
+    the_team_id BIGINT,
+    contestant_ids BIGINT[]
+)
+RETURNS VOID AS $$
+DECLARE
+    new_lineup_id BIGINT;
+    i INT;
+BEGIN
+    -- Create a new team lineup
+    INSERT INTO public.team_lineup (team_id, created_at)
+    VALUES (the_team_id, NOW())
+    RETURNING id INTO new_lineup_id;
+
+    -- Insert each contestant into team_member_placement
+    FOR i IN 1..array_length(contestant_ids, 1) LOOP
+        INSERT INTO public.team_member_placement (lineup_id, contestant_id, position_number, created_at)
+        VALUES (new_lineup_id, contestant_ids[i], i, NOW());
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;

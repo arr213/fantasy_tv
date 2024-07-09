@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { EmailOtpType, MobileOtpType } from "@supabase/supabase-js";
+import { EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -23,6 +23,6 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  return NextResponse.redirect(`${origin}`);
 }
 
