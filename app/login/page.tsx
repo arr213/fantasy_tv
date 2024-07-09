@@ -18,7 +18,7 @@ export default function Login({
 
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${origin}/auth/callback` },
+      options: { emailRedirectTo: `${origin}` },
     })
 
     if (error) {
@@ -28,7 +28,7 @@ export default function Login({
     const tenSeconds = new Promise((resolve) => {
       setTimeout(() => {
         resolve('Resolved after 10 seconds');
-      }, 10000);
+      }, 5000);
     });
     await tenSeconds;
     return redirect("/");
