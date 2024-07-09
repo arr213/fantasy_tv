@@ -25,8 +25,13 @@ export default function Login({
       console.log("Error:", error);
       return redirect("/login?message=Could not authenticate user");
     }
-
-    // return redirect("/");
+    const tenSeconds = new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('Resolved after 10 seconds');
+      }, 10000);
+    });
+    await tenSeconds;
+    return redirect("/");
   };
 
   return (
