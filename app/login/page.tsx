@@ -16,10 +16,10 @@ export default function Login({
     const email = formData.get("email") as string;
     const supabase = createClient();
 
-    console.log("Redirecting to", `${origin}/`);
+    console.log("Redirecting to", `${origin}/auth/callback/`);
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${origin}/` },
+      options: { emailRedirectTo: `${origin}/auth/callback/` },
     })
 
     if (error) {
