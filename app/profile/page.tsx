@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { FormEvent } from 'react'
 import {saveProfile} from "@/actions/profile"
 import { Database } from '../../database.types'
+import ProfileForm from "./profileForm";
 
 
 export default async function Index() {
@@ -22,33 +23,11 @@ export default async function Index() {
         .select("*")
         .eq("email", user.email!)
         .single();
+        
+    if (!app_user) throw new Error("No app_user found");
     
     return <div>
         <h1>Profile</h1>
-        <form action={saveProfile} className="flex flex-col gap-2">
-            <TextField
-                variant="outlined"
-                disabled
-                id="email"
-                label="email"
-                name="email"
-                value={app_user?.email || ""}
-                />
-            <TextField
-                variant="outlined"
-                id="first_name"
-                name="first_name"
-                label="First Name"
-                value={app_user?.first_name || ""}
-                />
-            <TextField
-                variant="outlined"
-                id="last_name"
-                name="last_name"
-                label="Last Name"
-                value={app_user?.last_name || ""}
-                />
-            <Button type="submit" variant="contained">Save</Button>
-        </form>
+        <ProfileForm app_user={app_user} saveProfile={saveProfile} />
     </div>
 }

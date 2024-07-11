@@ -14,7 +14,7 @@ export default function JoinLeagueSection({app_user, joinableLeagues, joinLeague
     return (
       <div>
         <h2 className="font-bold text-4xl mb-4">Join a league:</h2>
-        {
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">{
           joinableLeagues.map(league => (
             <Card 
               key={league.id} 
@@ -33,7 +33,7 @@ export default function JoinLeagueSection({app_user, joinableLeagues, joinLeague
               </div>
             </Card>
           ))
-        }
+        }</div>
       </div>
     )
   }

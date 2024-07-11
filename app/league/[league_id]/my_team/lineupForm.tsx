@@ -231,6 +231,7 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
     let roundCount = [...contestants];
     roundCount.pop();
 
+
     return (
         <div className="flex flex-col gap-2">
             <div className="flex justify-center text-center gap-2">

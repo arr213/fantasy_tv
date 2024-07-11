@@ -56,7 +56,7 @@ export default async function Index() {
                 
                 {
                   myLeagues.map(league => (
-                    <Link key={league.id} href={`/league/${league.id}`}>
+                    <Link key={league.id} href={`/league/${league.id}`} className="flex gap-2">
                       <Card className="w-80 rounded-md p-2 bg-slate-200 min-h-40">
                           <h3 className="font-bold text-2xl">{league.league_name}</h3>
                           {/* 

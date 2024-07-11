@@ -1,15 +1,18 @@
 import React from 'react';
-import { createClient } from "@/utils/supabase/server";
 import { TextField } from '@mui/material';
-import TeamNameForm from './teamNameForm';
-import { saveTeamName, saveLineup } from '@/actions/my_team';
-import LineupForm from './lineupForm';
 import _ from 'lodash';
+import { redirect } from 'next/navigation';
+
+import { saveTeamName, saveLineup } from '@/actions/my_team';
+import { createClient } from "@/utils/supabase/server";
+import LineupForm from './lineupForm';
+import TeamNameForm from './teamNameForm';
 
 export default async function MyTeam({params}: { params: {league_id: string}}) {
     const supabase = createClient();
 
     const {data: { user }} = await supabase.auth.getUser();
+    if (!user) redirect("/login");
 
     const {data: league, error: leagueError } = await supabase.from("league").select("*").eq("id", params.league_id).single();
     if (leagueError) console.error('Error getting league.', leagueError);

@@ -26,13 +26,8 @@ export default function Login({
       console.log("Error:", error);
       return redirect("/login?message=Could not authenticate user");
     }
-    const tenSeconds = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve('Resolved after 10 seconds');
-      }, 5000);
-    });
-    await tenSeconds;
-    return redirect("/");
+
+    return redirect("/login/check_email");
   };
 
   return (
@@ -50,7 +45,7 @@ export default function Login({
         <SubmitButton
           formAction={signIn}
           className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-          pendingText="Check your email to sign in"
+          pendingText="Sending login link..."
         >
           Sign In / Sign Up
         </SubmitButton>
