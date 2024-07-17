@@ -52,3 +52,29 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION create_survival_submissions(
+    the_league_id BIGINT,
+    survival_records JSONB
+)
+RETURNS VOID AS $$
+BEGIN
+    -- Delete old survival records for the given league
+    DELETE FROM public.survival_record
+    WHERE team_id IN (
+        SELECT t.id
+        FROM public.team t
+        JOIN public.league l ON t.league_id = l.id
+        WHERE l.id = the_league_id
+    );
+
+    -- Insert new survival records
+    INSERT INTO public.survival_record (team_id, contestant_id, round_id)
+    SELECT 
+        (value->>'team_id')::BIGINT,
+        (value->>'contestant_id')::BIGINT,
+        (value->>'round_id')::BIGINT
+    FROM jsonb_array_elements(survival_records) AS value
+    ON CONFLICT (team_id, round_id) DO UPDATE
+    SET contestant_id = EXCLUDED.contestant_id;
+END;
+$$ LANGUAGE plpgsql;
