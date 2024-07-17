@@ -4,7 +4,7 @@ export default function RulesPage() {
 
     return (
         <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-4">Big Brother Fantasy League: Home Page Explainer / FAQ</h1>
+            <h1 className="text-3xl font-bold mb-4">Fantasy Survival Explainer / FAQ</h1>
             <p className="mb-4">Welcome to the Big Brother Fantasy League! Get ready to test your prediction skills and enjoy the excitement of Big Brother with your friends. This year, the league will follow "survivor" rules, modeled after a fantasy football survivor league. Here's everything you need to know to get started:</p>
             
             <h2 className="text-2xl font-semibold mt-6 mb-4">How It Works</h2>
@@ -79,7 +79,7 @@ export default function RulesPage() {
             </ul>
             
             <h2 className="text-2xl font-semibold mt-6 mb-4">Example Cases</h2>
-            
+
             <h3 className="text-xl font-semibold mt-4 mb-2">Example 1:</h3>
             <ul className="list-disc list-inside mb-4">
                 <li>Week 1: You choose Houseguest A. Houseguest A is not evicted. Your team survives.</li>

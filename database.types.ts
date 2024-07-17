@@ -528,6 +528,17 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_all_lineups: {
+        Args: {
+          the_league_id: number
+        }
+        Returns: {
+          lineup_id: number
+          lineup_created_at: string
+          team_id: number
+          contestant_ids: number[]
+        }[]
+      }
       get_available_leagues: {
         Args: {
           user_email: string
