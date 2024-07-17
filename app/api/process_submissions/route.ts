@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-
-import { createClient } from "@/utils/supabase/server";
 import { DateTime } from "luxon";
 import _ from "lodash";
+
+import { createClient } from "@/utils/supabase/server";
 
 
 
@@ -29,30 +29,27 @@ export async function POST(request: Request){
 
 
   // Sort thru and create a list of the teams and their submissions
-  let teamSubmissions = [];
+  let submissions = [];
   for (let t of teams) {
+    let teamSubmissions = [];
     for (let l of lineupMap[t.team_id]) {
-      if (l.round_id === roundsWithEvictions[0].round_id) {
-        teamSubmissions.push(l);
-      }
-
+      let round = roundsWithEvictions.find(r => r.id === l.round_id)
+      let alreadyEliminated = roundsWithEvictions.filter(r =>r.round_number < l.round_number).map
+      let alreadySubmitted = teamSubmissions.map(s => s.contestant_id)
+      let chosenContestantId = Array.from(l.contestant_ids).push(...contestants.map(c =>c.id)).filter(c_id => !alreadyEliminated.includes(c_id) && !alreadySubmitted.includes(c_id))[0]
+      let newSubmission = {
+        round_id: l.round_id,
+        team_id: l.team_id,
+        contestant_id: chosenContestantId
+      };
+      teamSubmissions.push(newSubmission)
     }
+    submissions.push(...teamSubmissions)
   }
 
-  for (let r of roundsWithEvictions) {
-    let roundSubmissions = [];
-    for (let l of lineups) {
-      if (l.round_id === r.round_id && r.deadline_date_time < DateTime.now().toISO()) {
-        roundSubmissions.push(l);
-
-
-      }
-    }
-    teamSubmissions.push(...roundSubmissions);
-  }
   // Create and delete submissions in one operation 
   // Must code create_round_submissions in the db
-  const {data: teams, error: teamsError} = await supabase.rpc('create_survival_submissions', {submissions: teamSubmissions});
+  const {data: teams, error: teamsError} = await supabase.rpc('create_survival_submissions', {submissions: submissions});
 
   
 }
