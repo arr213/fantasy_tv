@@ -537,6 +537,8 @@ export type Database = {
           lineup_created_at: string
           team_id: number
           contestant_ids: number[]
+          round_id: number
+          round_number: number
         }[]
       }
       get_available_leagues: {

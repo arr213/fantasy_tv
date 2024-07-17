@@ -3,7 +3,9 @@ RETURNS TABLE(
     lineup_id BIGINT,
     lineup_created_at TIMESTAMP WITH TIME ZONE,
     team_id BIGINT,
-    contestant_ids BIGINT[]
+    contestant_ids BIGINT[],
+    round_id BIGINT,
+    round_number SMALLINT
 ) AS $$
 BEGIN
     RETURN QUERY
