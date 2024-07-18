@@ -2,11 +2,13 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import _ from 'lodash';
 import { redirect } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 import { saveTeamName, saveLineup } from '@/actions/my_team';
 import { createClient } from "@/utils/supabase/server";
-import LineupForm from './lineupForm';
+// import LineupForm from './lineupForm';
 import TeamNameForm from './teamNameForm';
+const LazyLineupForm = dynamic(() => import('./lineupForm'), {ssr: false});
 
 export default async function MyTeam({params}: { params: {league_id: string}}) {
     const supabase = createClient();
@@ -50,6 +52,6 @@ export default async function MyTeam({params}: { params: {league_id: string}}) {
     return <div className='flex flex-col gap-4 md:w-3/4 mx-auto justify-center items-center'>
         <h1 className='text-2xl'>Manage your team</h1>
         <TeamNameForm team={team} saveTeamName={saveTeamName.bind(null, team)} />
-        <LineupForm team={team} lineup={lineup} rounds={rounds} contestants={contestants} past_submissions={past_submissions} saveLineup={saveLineup.bind(null, team)} />
+        <LazyLineupForm team={team} lineup={lineup} rounds={rounds} contestants={contestants} past_submissions={past_submissions} saveLineup={saveLineup.bind(null, team)} />
     </div>
 }
