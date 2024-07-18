@@ -24,9 +24,8 @@ interface LineupFormProps {
 
 export default function LineupForm({ team, lineup, contestants, rounds, past_submissions, saveLineup }: LineupFormProps) {
     // const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [newLineup, setNewLineup] = useState(lineup);
     const [editable, setEditable] = useState(false);
-
+    const [newLineup, setNewLineup] = useState(lineup);
 
     const isLineupDifferent = newLineup.map(c => c.contestant_id).join() !== lineup.map(c => c.contestant_id).join();
 
@@ -57,9 +56,8 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
 
     let roundCount = [...contestants];
     roundCount.pop();
-    let blackRoundCount = roundCount.length - (newLineup.length + past_submissions.length);
+    let blankRoundCount = Math.max(roundCount.length - (newLineup.length + past_submissions.length), 0);
     
-
     return (
         <div className="flex flex-col gap-2">
             <div className="flex justify-center text-center gap-2">
@@ -127,7 +125,7 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                             )}
                         </Droppable>
                     </DragDropContext>
-                    {_.fill(Array(blackRoundCount), 1).map((_, idx) => (
+                    {_.fill(Array(blankRoundCount), 1).map((_, idx) => (
                         <PersonOff key={`empty-${idx}`} className="bg-slate-200 h-10 w-32 flex align-middle items-center" />
                     ))}
                 </div>
