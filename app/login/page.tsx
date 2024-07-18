@@ -4,19 +4,16 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  const supabase = createClient();
   const signIn = async (formData: FormData) => {
     "use server";
-
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
-    const supabase = createClient();
-
-    console.log("Redirecting to", `${origin}/auth/callback/`);
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${origin}/auth/callback/` },
@@ -29,6 +26,9 @@ export default function Login({
 
     return redirect("/login/check_email");
   };
+
+  const { data: { user } } = await supabase.auth.getUser(); 
+  if (user) return redirect("/");
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">

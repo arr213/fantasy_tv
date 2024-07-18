@@ -1,3 +1,4 @@
+"use server";
 import { NextResponse } from "next/server";
 import { DateTime } from "luxon";
 import _ from "lodash";
@@ -7,10 +8,10 @@ import { Database } from "@/database.types";
 
 
 
-export async function POST(request: Request, response: Response){
-  let body = await request.json();
-  let the_league_id = Number(body.league_id);
-
+export async function processSurvivalSubmissions(league_id: number | string){
+  "use server"
+  debugger;
+  const the_league_id = Number(league_id);
   const supabase = createClient();
   
   // Fetch required data
@@ -38,8 +39,11 @@ export async function POST(request: Request, response: Response){
   for (let t of teams) {
     let teamSubmissions = [];
     for (let l of lineupMap[t.team_id]) {
+      
       let round = roundsWithEvictions.find(r => r.round_id === l.round_id)
-      let alreadyEliminated = roundsWithEvictions.filter(r =>r.round_number < l.round_number).map(r => r.evicted_contestant)
+      let alreadyEliminated = roundsWithEvictions
+        .filter(r =>r.round_number < l.round_number)
+        .map(r => r.evicted_contestant)
       let alreadySubmitted = teamSubmissions.map(s => s.contestant_id)
       let chosenContestantId: number = l.contestant_ids
         .concat(contestants.map(c =>c.contestant_id))
@@ -54,9 +58,11 @@ export async function POST(request: Request, response: Response){
     submissions.push(...teamSubmissions)
   }
 
+  console.log("Submissions:", submissions)
+
   // Create and delete submissions in one operation 
   // Must code create_round_submissions in the db
   const res = await supabase.rpc('create_survival_submissions', {the_league_id, survival_records: submissions});
-  console.log(res);
+  console.log("Created Survival Records:", res);
   
 }

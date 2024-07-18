@@ -1,3 +1,8 @@
+-- Survival records must be unique per team-round
+ALTER TABLE public.survival_record
+ADD CONSTRAINT unique_team_round UNIQUE (team_id, round_id);
+
+
 CREATE OR REPLACE FUNCTION get_all_lineups(the_league_id BIGINT)
 RETURNS TABLE(
     lineup_id BIGINT,
@@ -32,18 +37,19 @@ BEGIN
             public.round r ON l.created_at <= r.deadline_date_time
         JOIN 
             team_info ti ON ti.team_id = l.team_id
+        WHERE r.deadline_date_time < NOW()
         GROUP BY 
             l.id, l.created_at, l.team_id, r.id
     )
     SELECT 
-        lineup_id,
-        lineup_created_at,
-        team_id,
-        contestant_ids, 
-        round_id,
-        round_number
+        ll.lineup_id,
+        ll.lineup_created_at,
+        ll.team_id,
+        ll.contestant_ids, 
+        ll.round_id,
+        ll.round_number
     FROM 
-        latest_lineups
+        latest_lineups ll
     WHERE 
         rn = 1
     ORDER BY 

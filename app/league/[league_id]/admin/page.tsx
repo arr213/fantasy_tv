@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-
+import ProcessSurvivalForm from "./processForm";
 
 export default async function AdminPage({params}: {params: {league_id: string}}) {
   const supabase = createClient();
@@ -13,13 +13,16 @@ export default async function AdminPage({params}: {params: {league_id: string}})
   }
   const { data: leagueAdmins, error: leagueAdminsError } = await supabase.from("league_admin").select("*").eq("league_id", Number(params.league_id));
   if (!leagueAdmins || leagueAdminsError || !leagueAdmins.find((admin) => admin.email === user.email)) {
+    debugger;
     return redirect("/");
   }
 
-  const { data: rounds, error: roundsError } = await supabase.from("round").select("*").eq("league_id", Number(params.league_id));
+  const {data: rounds, error: roundsError } = await supabase.rpc("get_rounds_with_evictions", {the_league_id: Number(params.league_id)});
   if (!rounds || roundsError) {
     console.error('Error getting rounds.', roundsError);
   }
+
+  if (!league) return <></>;
 
   return (
     <div>
@@ -32,9 +35,11 @@ export default async function AdminPage({params}: {params: {league_id: string}})
           <h2>Team</h2>
           <h2>Manager</h2>
           <h1>Remaining Players</h1>
-          <></>
-          <></>
         </div>
+      </section>
+      <section>
+        <h1 className='text-2xl mb-5'>Process Rounds</h1>
+        <ProcessSurvivalForm league_id={league.id} />
       </section>
     </div>
   );

@@ -521,6 +521,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_survival_submissions: {
+        Args: {
+          the_league_id: number
+          survival_records: Json
+        }
+        Returns: undefined
+      }
       create_team_lineup: {
         Args: {
           the_team_id: number

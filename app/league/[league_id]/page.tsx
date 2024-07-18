@@ -12,9 +12,6 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
     const {data: teams, error: teamsError} = await supabase.rpc('get_team_summary', {the_league_id: Number(params.league_id)});
     if (teamsError) console.error('Error getting teams.', teamsError);
     
-    const {}
-    // console.log("Teams", teams);
-
     return <div>
 
         <header className="flex flex-col justify-between my-5">
@@ -23,15 +20,18 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
         </header>
 
         <section className="bg-slate-300 p-10 rounded-lg">
-            <h1 className='text-2xl mb-5'>League Standings</h1>
-            <div className='grid grid-cols-2 gap-3'>
+            <h1 className='text-2xl mb-5'>Team Standings</h1>
+            <div className='grid grid-cols-3 gap-3'>
                 <h2>Team</h2>
                 <h2>Manager</h2>
-                {/* <h1>Remaining Players</h1> */}
+                {/* <h1>Rounds Survived</h1>
+                <h1>Remaining Players</h1> */}
+                <h1>Mistake Count</h1>
             {teams?.flatMap((t, i) => {
                 return <>
                     <h3 key={`team_name_${i}`}>{t.team_name}</h3>
                     <h3 key={`manager_${i}`}>{t.team_manager_first_name} {t.team_manager_last_name}</h3>
+                    <h3 key={`mistake_count_${i}`}>{0}</h3>
                 </>
             })}
             </div>
