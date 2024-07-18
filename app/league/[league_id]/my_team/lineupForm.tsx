@@ -23,7 +23,7 @@ interface LineupFormProps {
 }
 
 export default function LineupForm({ team, lineup, contestants, rounds, past_submissions, saveLineup }: LineupFormProps) {
-    // const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [editable, setEditable] = useState(false);
     const [newLineup, setNewLineup] = useState(lineup);
 
@@ -41,15 +41,15 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
         setNewLineup(newLineupArray);
     };
 
-    // const handleCloseSnackbar = (event: any, reason?: string) => {
-    //     if (reason === 'clickaway') return;
-    //     setSnackbarOpen(false);
-    // };
+    const handleCloseSnackbar = (event: any, reason?: string) => {
+        if (reason === 'clickaway') return;
+        setSnackbarOpen(false);
+    };
 
     const handleEditAndSave = async () => {
         if (editable && isLineupDifferent) {
             await saveLineup(newLineup);
-            // setSnackbarOpen(true);
+            setSnackbarOpen(true);
         }
         setEditable(!editable);
     };
@@ -152,7 +152,7 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                     ))}
                 </div>
             </div>
-            {/* <Snackbar
+            <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}
                 onClose={handleCloseSnackbar}
@@ -164,7 +164,7 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                 >
                     Successfully saved your new team lineup
                 </MuiAlert>
-            </Snackbar> */}
+            </Snackbar>
         </div>
     );
 }
