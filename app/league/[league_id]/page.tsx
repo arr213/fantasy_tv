@@ -11,7 +11,8 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
 
     const {data: teams, error: teamsError} = await supabase.rpc('get_team_summary', {the_league_id: Number(params.league_id)});
     if (teamsError) console.error('Error getting teams.', teamsError);
-
+    
+    const {}
     // console.log("Teams", teams);
 
     return <div>
