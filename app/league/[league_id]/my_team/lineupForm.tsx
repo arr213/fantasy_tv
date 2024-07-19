@@ -76,8 +76,8 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                 <div className="flex flex-col gap-2">
                     <h3 className="h-6 text-center">Eviction</h3>
                     {roundCount.map((c, idx) => (
-                        <div key={c.contestant_id} className="bg-slate-200 h-10 w-20 flex align-middle items-center justify-center">
-                            <h1>Round {idx + 1}</h1>
+                        <div key={c.contestant_id} className="bg-slate-200 h-10 w-20 md:w-28 flex align-middle items-center justify-center">
+                            <h1 className="text-sm md:text-base">Eviction {idx + 1}</h1>
                         </div>
                     ))}
                 </div>
