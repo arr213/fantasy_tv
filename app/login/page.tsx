@@ -14,6 +14,7 @@ export default async function Login({
     "use server";
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
+    const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${origin}/auth/callback/` },
