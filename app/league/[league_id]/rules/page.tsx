@@ -18,6 +18,8 @@ export default function RulesPage() {
                 <li>The second safe-from-eviction guess is also due on 7/25 right before the first live-eviction episode.</li>
                 <li>The third safe-from-eviction guess is due on 8/1, at the start of the 2nd live eviction episode. You will always be guessing 1-week in advance.</li>
                 <li>You can order your lineup so that future houseguest submissions follow the order you set.</li>
+                <li>If you don't update your lineup, the next person in line will automatically be submitted for the following week.</li>
+                <li>Lineups are locked at the beginning of the live eviction episode. Changes made after the live episode starts may not take effect.</li>
             </ul>
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Survival:</h3>
@@ -30,12 +32,15 @@ export default function RulesPage() {
             <ul className="list-disc list-inside mb-4">
                 <li>You cannot choose a houseguest more than once. After you have used a player, you can't pick them again for the rest of the season.</li>
                 <li>You may run out of options if your remaining players have already been evicted.</li>
+                <li>Later in the game, you will need to have players left in order to continue competing. So if you think a player will last long in the game, don't choose them too early.</li>
+                <li>The most ideal situation is when a player gets evicted one round after you have chosen them. That way you will still have the most players to choose from later in the game.</li>
             </ul>
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Shoot the Moon:</h3>
             <ul className="list-disc list-inside mb-4">
                 <li>After a single mistake, you are out of the running for the main prize, but you can compete for the consolation prize.</li>
                 <li>Each week, you will continue to submit guesses for who is "safe-from-eviction." If you guess the evicted houseguest the most times, you will earn your entry fee back.</li>
+                <li>If a team has no players left to submit, it will not be counted as a point towards the </li>
             </ul>
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Entry Fee and Prize:</h3>
@@ -45,33 +50,15 @@ export default function RulesPage() {
                 <li>The remaining prize pot will be split among the people who last the longest in the league. If more than one team ties for the longest weeks without a single mistake, those teams will split the pot evenly.</li>
             </ul>
             
-            <h2 className="text-2xl font-semibold mt-6 mb-4">Additional Features</h2>
-            
-            <h3 className="text-xl font-semibold mt-4 mb-2">Lineup Order:</h3>
-            <ul className="list-disc list-inside mb-4">
-                <li>You can order your lineup of houseguests. The first person in your lineup will be submitted as your pick for the week.</li>
-                <li>If you don't update your lineup, the next person in line will automatically be submitted for the following week.</li>
-                <li>Lineups are locked at the beginning of the live eviction episode. Changes made after the live episode starts may not take effect.</li>
-            </ul>
-            
             <h3 className="text-xl font-semibold mt-4 mb-2">Weekly Updates:</h3>
-            <ul className="list-disc list-inside mb-4">
-                <li>You will receive weekly emails with updates on:</li>
-                <ul className="list-disc list-inside ml-6">
+            <p>You will receive weekly emails with updates on:</p>
+            <ul className="list-disc list-inside ml-6">
                 <li>Which teams are still in the running</li>
                 <li>Who they have submitted for the upcoming round</li>
                 <li>How many players each team has left</li>
                 <li>How many mistakes each team has made</li>
-                </ul>
             </ul>
-            
-            <h2 className="text-2xl font-semibold mt-6 mb-4">Additional Rules</h2>
-            
-            <h3 className="text-xl font-semibold mt-4 mb-2">Mistakes Count:</h3>
-            <ul className="list-disc list-inside mb-4">
-                <li>Teams that are out of the season can still submit houseguests each week.</li>
-                <li>If a team has no players left to submit, it will not be counted as a mistake.</li>
-            </ul>
+        
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Winner Determination:</h3>
             <ul className="list-disc list-inside mb-4">
@@ -123,7 +110,7 @@ export default function RulesPage() {
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Contact Us</h3>
             <p className="mb-4">For any questions or more information, please contact us at <a href="mailto:contact@fantasybigbrother.com" className="text-blue-500">contact@fantasybigbrother.com</a>.</p>
-            </div>
+        </div>
 
     )
 }
