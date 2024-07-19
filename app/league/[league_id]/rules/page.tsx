@@ -12,10 +12,11 @@ export default function RulesPage() {
             <h3 className="text-xl font-semibold mt-4 mb-2">Weekly Submissions:</h3>
             <ul className="list-disc list-inside mb-4">
                 <li>Each week, you'll submit the name of one houseguest who you believe will <strong>NOT</strong> be evicted that week.</li>
-                <li>Submissions are due before the live eviction episode (usually every Thursday) for the following round.</li>
+                <li>Submissions are due before the live eviction episode (usually every Thursday) for the following round. You are predicting 1-week in advance.</li>
                 <li>Submissions are locked before knowing the results of the HOH competition or who was evicted in the previous round.</li>
-                <li>The first safe-from-eviction guess is due when the premiere starts.</li>
-                <li>The second safe-from-eviction guess is due on the night of the first live eviction at the start of the live eviction.</li>
+                <li>The first safe-from-eviction guess is due 7/25 right before the episode of the eviction starts. This week is an exception. You have more time to decide because we didn't know the cast earlier.</li>
+                <li>The second safe-from-eviction guess is also due on 7/25 right before the first live-eviction episode.</li>
+                <li>The third safe-from-eviction guess is due on 8/1, at the start of the 2nd live eviction episode. You will always be guessing 1-week in advance.</li>
                 <li>You can order your lineup so that future houseguest submissions follow the order you set.</li>
             </ul>
             
@@ -118,7 +119,7 @@ export default function RulesPage() {
             </ul>
             
             <h3 className="text-xl font-semibold mt-4 mb-2">What if someone quits mid-week?</h3>
-            <p className="mb-4">If someone quits during the first HOH, it counts as the first eviction. Your second eviction spot will then be locked in as of the premiere. It is advisable to set your team lineup one or two rounds in advance.</p>
+            <p className="mb-4">If someone quits in the middle of the week, for example during the first HOH, it counts as the first eviction. The person evicted at the end of the week will then count as the 2nd evicted. You are just guessing the order they leave the game. Whenever someone leaves, it will be compared against your lineup at the time of the previous live-episode.</p>
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Contact Us</h3>
             <p className="mb-4">For any questions or more information, please contact us at <a href="mailto:contact@fantasybigbrother.com" className="text-blue-500">contact@fantasybigbrother.com</a>.</p>
