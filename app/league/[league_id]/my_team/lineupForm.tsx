@@ -72,9 +72,9 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                     {isLineupDifferent && <h3 className="text-center bg-yellow-200">You have unsaved changes!</h3>}
                 </div>
             )}
-
-            <div className="flex gap-2">
+            <div className="flex gap-2 mb-20">
                 <div className="flex flex-col gap-2">
+                    <h3 className="h-6 text-center">Eviction</h3>
                     {roundCount.map((c, idx) => (
                         <div key={c.contestant_id} className="bg-slate-200 h-10 w-20 flex align-middle items-center justify-center">
                             <h1>Round {idx + 1}</h1>
@@ -82,6 +82,7 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                     ))}
                 </div>
                 <div className="flex flex-col gap-2">
+                    <h3 className="h-6 text-center">Chosen Survivor</h3>
                     {past_submissions.map((ps, idx) => (
                         <div key={ps.contestant_id} className="bg-slate-200 h-10 w-32 flex align-middle items-center pl-2">
                             {ps.is_correct === true && <CheckCircleIcon className="text-green-500 text-2xl" />}
@@ -132,6 +133,7 @@ export default function LineupForm({ team, lineup, contestants, rounds, past_sub
                     ))}
                 </div>
                 <div className="flex flex-col gap-2">
+                    <div className="h-6 text-center"></div>
                     {rounds.filter(r => r.evicted_contestant).map((r, idx) => {
                         const c = contestants.find(c => c.contestant_id === r.evicted_contestant);
                         return (

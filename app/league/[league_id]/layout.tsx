@@ -23,9 +23,11 @@ export default async function Layout({children, params
         <>
             <AppBar position="static" className="bg-blue-900 w-dvw -mt-4">
                 <Toolbar className="flex flex-col md:flex-row md:justify-between lg:w-3/4 mx-auto">
-                    <Typography variant="h6" className="text-white mb-2 md:mb-0">
-                        {league?.league_name}
-                    </Typography>
+                    <div className='mt-2'>
+                        <Typography variant="h6" className="text-white mb-2 md:mb-0">
+                            {league?.league_name}
+                        </Typography>
+                    </div>
                     <div className="flex space-x-4">
                         <Link href={`/league/${params.league_id}`}>
                             <Button className="text-white">League Home</Button>

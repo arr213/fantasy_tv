@@ -77,13 +77,13 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
     })
 
     return (
-        <div>
-            <header className="p-4 flex flex-col justify-between my-5">
+        <div className='p-4'>
+            <header className="flex flex-col justify-between my-5">
                 <h1 className='text-2xl'>Welcome to {league?.league_name}!</h1>
                 <p className='text-sm'>If you haven't yet, please be sure to check out the <Link href={`/league/${league_id}/rules`}>rules of the league</Link>, and be sure to <Link href={`/league/${league_id}/my_team`}>set your lineup.</Link></p>
             </header>
 
-            <section className="bg-slate-300 p-10 rounded-lg">
+            <section className="bg-slate-300 p-6 rounded-lg">
                 <h1 className='text-2xl mb-5'>Team Standings</h1>
                 <div className='grid grid-cols-4 gap-3'>
                     {/* <h2 className='text-wrap'>Team</h2> */}

@@ -50,7 +50,13 @@ export default async function MyTeam({params}: { params: {league_id: string}}) {
     lineup = _.uniqBy(lineup, 'contestant_id');
 
     return <div className='flex flex-col gap-4 md:w-3/4 mx-auto justify-center items-center'>
-        <h1 className='text-2xl'>Manage your team</h1>
+        <div className='flex flex-col p-6 gap-4'>
+            <h1 className='text-2xl'>Manage your team</h1>
+            <p>You can manage your team here throughout the season. You can edit your team name at any point in the season.</p>
+            <p>To begin editing your lineup, click the edit button. Be sure to hit save when you are done editing.</p>
+            <p>At the beginning of each live eviction episode, your guess for the person that will be safe NEXT WEEK will become locked in. All season, you will be predicting one week in advance, one person that will be survive that week.</p>
+            <p>Please note, eviction 1 will be an exception. The first eviction, you will lock in your guess right before the episode of that eviction. So week 1 will be special, you will lock in 2 people at the same time.</p>
+        </div>
         <TeamNameForm team={team} saveTeamName={saveTeamName.bind(null, team)} />
         <LazyLineupForm team={team} lineup={lineup} rounds={rounds} contestants={contestants} past_submissions={past_submissions} saveLineup={saveLineup.bind(null, team)} />
     </div>
