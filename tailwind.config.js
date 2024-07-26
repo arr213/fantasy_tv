@@ -6,6 +6,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundColor: ['odd', 'even'],
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

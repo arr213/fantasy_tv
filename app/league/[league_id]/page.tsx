@@ -133,17 +133,17 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                     If you haven't yet, please be sure to check out the <Link href={`/league/${league_id}/rules`}>rules of the league</Link>, and be sure to <Link href={`/league/${league_id}/my_team`}>set your lineup.</Link></p>
             </header>
 
-            <section className="rounded-lg text-center w-dvw flex flex-col items-start">
-                <h1 className="text-2xl mb-5 w-dvw">Survival Standings</h1>
-                <table className="min-w-full divide-y divide-gray-200 table-auto overflow-x-scroll">
+            <section className="rounded-lg text-center flex flex-col items-start">
+                <h1 className="text-2xl mb-5 w-100">Survival Standings</h1>
+                <table className="min-w-full divide-y divide-gray-200 table-auto border-collapse border border-slate-200">
                     <thead className="bg-gray-50">
                     <tr>
-                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{' '}</th>
-                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Rounds Survived</th>
-                        <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining Players</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">{' '}</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">Rounds Survived</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining Players</th>
                         {pendingRounds.map((round, i) => (
-                            <th key={`pending_round_${i}`} scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th key={`pending_round_${i}`} scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 {round.display_name}
                             </th>
                         ))}
@@ -151,22 +151,22 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                     {mainRows.map((t, i) => (
-                        <tr key={`row_${i}`}>
-                        <td className="px-6 py-4 whitespace-nowrap">{t.rankString}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div>
-                                <h3 className='text-sm text-wrap'>{t.team_name}</h3>
-                                <h3 className='text-slate-500 text-sm'>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
-                            </div>
-                            
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">{t.roundsSurvived}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{t.bench.length}</td>
-                        {pendingRounds.map((round, j) => (
-                            <td key={`pending_round_${i}_${j}`} className="px-6 py-4 whitespace-nowrap">
-                            {t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}
+                        <tr key={`row_${i}`} className='even:bg-gray-100 odd:bg-white'>
+                            <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.rankString}</td>
+                            <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
+                                <div>
+                                    <h3 className='text-sm text-wrap'>{t.team_name}</h3>
+                                    <h3 className='text-slate-500 text-sm'>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
+                                </div>
+                                
                             </td>
-                        ))}
+                            <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.roundsSurvived}</td>
+                            <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.bench.length}</td>
+                            {pendingRounds.map((round, j) => (
+                                <td key={`pending_round_${i}_${j}`} className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
+                                {t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}
+                                </td>
+                            ))}
                         </tr>
                     ))}
                     </tbody>
