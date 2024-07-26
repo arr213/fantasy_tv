@@ -143,7 +143,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                         <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Rounds Survived</th>
                         <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining Players</th>
                         {pendingRounds.map((round, i) => (
-                            <th key={`pending_round_${i}`} scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th key={`pending_round_${i}`} scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 {round.display_name}
                             </th>
                         ))}
