@@ -43,7 +43,7 @@ export default function Email(props: EmailProps) {
               <h2>{r.display_name}</h2>
               <Section>
                 <Row>
-                  
+                  <Column>Test</Column>
                 </Row>
               </Section>
             </Section>
