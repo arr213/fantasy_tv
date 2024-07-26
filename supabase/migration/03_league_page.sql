@@ -1,3 +1,5 @@
+ALTER TABLE public.team
+ADD CONSTRAINT unique_manager_email_league_id UNIQUE (manager_email, league_id);
 
 
 CREATE OR REPLACE FUNCTION get_team_summary(the_league_id bigint)
@@ -99,7 +101,7 @@ BEGIN
         public.league l ON t.league_id = l.id
     JOIN 
         public.app_user au ON au.email = t.manager_email
-    JOIN 
+    LEFT JOIN 
         selected_lineups sl ON sl.team_id = t.id
     LEFT JOIN 
         remaining_players rp ON rp.team_id = t.id

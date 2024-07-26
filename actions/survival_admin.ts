@@ -18,6 +18,8 @@ export async function processSurvivalSubmissions(league_id: number | string){
   let {data: teams, error: teamsError} = await supabase.rpc('get_team_summary', {the_league_id});
   if (teamsError || !teams) console.error('Error getting teams.', teamsError);
 
+  // console.log("The teams:", teams?.map(t => t.team_name).join("\n"));
+
   const {data: roundsWithEvictions, error: roundsError} = await supabase.rpc('get_rounds_with_evictions', {the_league_id});
   if (roundsError || !roundsWithEvictions) console.error('Error getting rounds.', roundsError);
 
@@ -36,11 +38,26 @@ export async function processSurvivalSubmissions(league_id: number | string){
   // Sort thru and create a list of the teams and their submissions
   let submissions = [] as Partial<Database['public']['Tables']['survival_record']['Row']>[];
 
+  const rounds = lineups.map(l => l.round_number);
+
   for (let t of teams) {
     let teamSubmissions = [];
-    for (let l of lineupMap[t.team_id]) {
-      
-      let round = roundsWithEvictions.find(r => r.round_id === l.round_id)
+    let theLineups = lineupMap[t.team_id]?.sort((a, b) => a.round_number - b.round_number) || [];
+    let flag = false;
+    if (!theLineups?.length) {
+      flag = true;
+      theLineups = roundsWithEvictions
+        .filter(r => DateTime.fromISO(r.deadline_date_time, {zone: 'America/New_York'}) < DateTime.now())
+        .map(r => ({
+          round_id: r.round_id,
+          round_number: r.round_number,
+          team_id: t.team_id,
+          contestant_ids: [...contestants.map(c => c.contestant_id)],
+          lineup_created_at: DateTime.fromSeconds(0).toISO(),
+          lineup_id: 0
+        }));
+    }
+    for (let l of theLineups) {
       let alreadyEliminated = roundsWithEvictions
         .filter(r =>r.round_number < l.round_number)
         .map(r => r.evicted_contestant)
@@ -58,7 +75,10 @@ export async function processSurvivalSubmissions(league_id: number | string){
     submissions.push(...teamSubmissions)
   }
 
-  console.log("Submissions:", submissions)
+  // console.log(
+  //   "The submissions:", 
+  //   submissions.map(s => `${teams.find(t => t.team_id === s.team_id)?.team_name}, ${contestants.find(c => c.contestant_id === s.contestant_id)?.display_name}, ${roundsWithEvictions.find(r => r.round_id === s.round_id)?.round_number}`).join("\n")
+  // );
 
   // Create and delete submissions in one operation 
   // Must code create_round_submissions in the db

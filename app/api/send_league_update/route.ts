@@ -1,5 +1,3 @@
-
-
 export async function POST() {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',

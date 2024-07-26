@@ -4,13 +4,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "pull-db": "supabase gen types typescript --project-id hjsqwggfokumhexzuyxm > database.types.ts"
+    "pull-db": "supabase gen types typescript --project-id hjsqwggfokumhexzuyxm > database.types.ts",
+    "email-dev": "email dev"
   },
   "dependencies": {
+    "@ag-grid-community/react": "^32.0.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@react-email/components": "0.0.22",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "autoprefixer": "10.4.17",
@@ -23,6 +26,8 @@
     "react": "18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.2.0",
+    "react-email": "2.1.6",
+    "react-use": "^17.5.1",
     "resend": "^3.4.0",
     "tailwindcss": "3.4.1",
     "typescript": "5.3.3"

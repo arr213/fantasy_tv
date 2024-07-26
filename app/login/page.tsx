@@ -2,7 +2,7 @@
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { SubmitButton } from "./submit-button";
+import SubmitButton from "./submit-button";
 
 export default async function Login({
   searchParams,

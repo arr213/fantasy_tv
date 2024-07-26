@@ -174,7 +174,7 @@ BEGIN
     LEFT JOIN 
         evictions e ON rs.round_id = e.round_id
     ORDER BY 
-        rs.round_number;
+        rs.round_number ASC;
 END;
 $$ LANGUAGE plpgsql;
 

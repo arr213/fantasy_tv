@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import ProcessSurvivalForm from "./processForm";
+import { Button } from "@mui/material";
 
 export default async function AdminPage({params}: {params: {league_id: string}}) {
   const supabase = createClient();
@@ -40,6 +41,10 @@ export default async function AdminPage({params}: {params: {league_id: string}})
       <section>
         <h1 className='text-2xl mb-5'>Process Rounds</h1>
         <ProcessSurvivalForm league_id={league.id} />
+      </section>
+      <section>
+        <h1 className='text-2xl mb-5'>Send Email Update</h1>
+        <Button>Send Email</Button>
       </section>
     </div>
   );

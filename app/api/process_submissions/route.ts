@@ -53,6 +53,10 @@ export async function POST(request: Request, response: Response){
     }
     submissions.push(...teamSubmissions)
   }
+  console.log(
+    "The submissions:", 
+    submissions.map(s => `${teams.find(t => t.team_id === s.team_id)?.team_name}, ${contestants.find(c => c.contestant_id === s.contestant_id)?.display_name}, ${roundsWithEvictions.find(r => r.round_id === s.round_id)?.round_number}`).join("\n")
+  );
 
   // Create and delete submissions in one operation 
   // Must code create_round_submissions in the db
