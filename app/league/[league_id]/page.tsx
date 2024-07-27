@@ -2,6 +2,9 @@ import React from 'react';
 import { createClient } from "@/utils/supabase/server";
 import { Link } from '@mui/material';
 import { DateTime } from 'luxon';
+import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 
 export default async function LeagueHomePage({params}: { params: {league_id: string}}) {
     const {league_id} = params;
@@ -138,12 +141,12 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                 <table className="min-w-full divide-y divide-gray-200 table-auto border-collapse border border-slate-200">
                     <thead className="bg-gray-50">
                     <tr>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">{' '}</th>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">Team</th>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">Rounds Survived</th>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining Players</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Team</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Rounds Survived</th>
+                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Remaining Players</th>
                         {pendingRounds.map((round, i) => (
-                            <th key={`pending_round_${i}`} scope="col" className="text-center border-collapse border border-slate-200 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th key={`pending_round_${i}`} scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">
                                 {round.display_name}
                             </th>
                         ))}

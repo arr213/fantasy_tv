@@ -1,14 +1,14 @@
 -- inserts a row into public.profiles
-create function public.handle_new_user()
-returns trigger
-language plpgsql
-security definer set search_path = ''
-as $$
-begin
-  insert into public.app_user (email)
-  values (new.email);
-  return new;
-end;
+create or replace function public.handle_new_user()
+  returns trigger
+  language plpgsql
+  security definer set search_path = ''
+  as $$
+  begin
+    insert into public.app_user (email)
+    values (new.email);
+    return new;
+  end;
 $$;
 
 -- trigger the function every time a user is created

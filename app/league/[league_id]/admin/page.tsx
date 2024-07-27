@@ -1,7 +1,10 @@
-import { createClient } from "@/utils/supabase/server";
+
 import { redirect } from "next/navigation";
-import ProcessSurvivalForm from "./processForm";
 import { Button } from "@mui/material";
+
+import { createClient } from "@/utils/supabase/server";
+import ProcessSurvivalForm from "./processForm";
+import RoundGrid from "./roundGrid";
 
 export default async function AdminPage({params}: {params: {league_id: string}}) {
   const supabase = createClient();
@@ -18,29 +21,29 @@ export default async function AdminPage({params}: {params: {league_id: string}})
     return redirect("/");
   }
 
-  const {data: rounds, error: roundsError } = await supabase.rpc("get_rounds_with_evictions", {the_league_id: Number(params.league_id)});
+  let {data: rounds, error: roundsError } = await supabase.rpc("get_rounds_with_evictions", {the_league_id: Number(params.league_id)});
   if (!rounds || roundsError) {
     console.error('Error getting rounds.', roundsError);
+    rounds = [];
   }
 
   if (!league) return <></>;
 
   return (
-    <div>
+    <div className="w-dvw lg:w-3/4">
       <header className="flex justify-between mb-10">
         <h1 className='text-2xl'>{league?.league_name} Admin</h1>
       </header>
-      <section className="bg-slate-300 p-10 rounded-lg">
-        <h1 className='text-2xl mb-5'>League Standings</h1>
-        <div className='grid grid-cols-2 gap-3'>
-          <h2>Team</h2>
-          <h2>Manager</h2>
-          <h1>Remaining Players</h1>
+      <section className="">
+        <h1 className='text-2xl mb-5'>Season Manager</h1>
+        <div className='flex flex-col'>
+          <div className="flex gap-4">
+            <h2 className="text-xl">Rounds</h2>
+            <ProcessSurvivalForm league_id={league.id} />
+          </div>
+          
+          <RoundGrid rounds={rounds} />
         </div>
-      </section>
-      <section>
-        <h1 className='text-2xl mb-5'>Process Rounds</h1>
-        <ProcessSurvivalForm league_id={league.id} />
       </section>
       <section>
         <h1 className='text-2xl mb-5'>Send Email Update</h1>

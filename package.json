@@ -16,6 +16,8 @@
     "@react-email/components": "0.0.22",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "ag-grid-community": "^32.0.2",
+    "ag-grid-react": "^32.0.2",
     "autoprefixer": "10.4.17",
     "geist": "^1.2.1",
     "lodash": "^4.17.21",
