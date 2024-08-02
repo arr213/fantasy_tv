@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/server";
 import ProcessSurvivalForm from "./processForm";
 import RoundGrid from "./roundGrid";
 import DateTimeForm from "./dateTimeForm";
+import AddRoundForm from "./addRoundForm";
 
 export default async function AdminPage({params}: {params: {league_id: string}}) {
   const supabase = createClient();
@@ -44,6 +45,7 @@ export default async function AdminPage({params}: {params: {league_id: string}})
             <h2 className="text-xl">Rounds</h2>
             <ProcessSurvivalForm league_id={league.id} />
             <DateTimeForm />
+            <AddRoundForm season_id={league.season_id}/>
           </div>
           <RoundGrid rounds={rounds} contestants={contestants} dateTimePicker={true} />
         </div>

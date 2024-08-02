@@ -183,9 +183,6 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                             {pendingRounds.map((round, j) => (
                                 <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
                                     <div>
-                                        {/* <div className="w-full flex text-center items-center">
-                                            <Avatar className='h-2 w-2 mx-auto'  />
-                                        </div> */}
                                         <h3 className='text-slate-700 text-sm'>{t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}</h3>
                                     </div>
                                 </td>

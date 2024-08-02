@@ -107,6 +107,22 @@ export async function updateRound({round_id, round_number, display_name, deadlin
   console.log("Updated Round:", round);
 }
 
+export async function createRound(season_id: number, formData: FormData) {
+  "use server";
+  const supabase = createClient();
+  const round_number = formData.get('round_number') as string;
+  const display_name = formData.get('display_name') as string;
+  console.log("Creating Round Args:", {round_number, display_name, season_id});
+  const {data: round, error: roundError} = await supabase.from("round").insert({
+    round_number: Number(round_number),
+    display_name,
+    season_id
+  }).single();
+  if (roundError || !round) console.error('Error creating round.', roundError);
+  console.log("Created Round:", round);
+}
+
+
 export async function updateEvictedContestant({round_id, evicted_contestant}: {
   round_id: number;
   evicted_contestant: number | null;
