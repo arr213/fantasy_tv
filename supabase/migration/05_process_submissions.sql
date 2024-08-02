@@ -15,7 +15,7 @@ RETURNS TABLE(
 BEGIN
     RETURN QUERY
     WITH team_info AS (
-        SELECT t.id AS team_id
+        SELECT t.id, t.league_id AS team_id
         FROM public.team t
         JOIN public.league l ON t.league_id = l.id
         WHERE l.id = the_league_id
@@ -34,10 +34,12 @@ BEGIN
         JOIN 
             public.team_member_placement p ON p.lineup_id = l.id
         JOIN 
-            public.round r ON l.created_at <= r.deadline_date_time
-        JOIN 
-            team_info ti ON ti.team_id = l.team_id
+            public.round r 
+            ON l.created_at <= r.deadline_date_time
+        JOIN league le ON r.league_id = le.id
+        JOIN team_info ti ON ti.team_id = l.team_id
         WHERE r.deadline_date_time < NOW()
+            AND r.season_id = le.season_id
         GROUP BY 
             l.id, l.created_at, l.team_id, r.id
     )

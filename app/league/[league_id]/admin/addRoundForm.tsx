@@ -8,7 +8,7 @@ import { createRound } from '@/actions/survival_admin';
 
 
 
-export default function AddRoundForm({season_id}: {season_id: number}) {
+export default function AddRoundForm({season_id, league_id}: {season_id: number, league_id: number}) {
     const [modalOpen, setmodalOpen] = useState(false);
     const [dt, setDt] =  useState<Dayjs | null>(dayjs(new Date()).startOf('hour'));
     const [alertCopied, setAlertCopied] = useState(false);
@@ -25,7 +25,7 @@ export default function AddRoundForm({season_id}: {season_id: number}) {
             <Dialog open={modalOpen} onClose={() => setmodalOpen(false)}>
                 <DialogTitle>Add Round</DialogTitle>
                 <DialogContent>
-                    <form action={createRound.bind(null, season_id)} className="flex flex-col gap-4 p-4">
+                    <form action={createRound.bind(null, season_id, league_id)} className="flex flex-col gap-4 p-4">
                         <Input id="round_number" name="round_number" placeholder='Round Number' />
                         <Input id="display_name" name="display_name" placeholder='Round Display Name' />
                         <Button type="submit">Submit</Button>

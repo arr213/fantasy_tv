@@ -5,12 +5,12 @@ import _ from "lodash";
 
 import { createClient } from "@/utils/supabase/server";
 import { Database } from "@/database.types";
+import { revalidatePath } from "next/cache";
 
 
 
 export async function processSurvivalSubmissions(league_id: number | string){
   "use server"
-  debugger;
   const the_league_id = Number(league_id);
   const supabase = createClient();
   
@@ -70,6 +70,9 @@ export async function processSurvivalSubmissions(league_id: number | string){
         team_id: l.team_id,
         contestant_id: chosenContestantId
       };
+      if (!l.round_id) {
+        console.log("Problem:", l)
+      }
       teamSubmissions.push(newSubmission)
     }
     submissions.push(...teamSubmissions)
@@ -77,13 +80,16 @@ export async function processSurvivalSubmissions(league_id: number | string){
 
   // console.log(
   //   "The submissions:", 
-  //   submissions.map(s => `${teams.find(t => t.team_id === s.team_id)?.team_name}, ${contestants.find(c => c.contestant_id === s.contestant_id)?.display_name}, ${roundsWithEvictions.find(r => r.round_id === s.round_id)?.round_number}`).join("\n")
+  //   submissions
+  //     .sort((a, b) => a.team_id - b.team_id)
+  //     // .sort(s => s.team_id === 13)
+  //     .map(s => `${teams.find(t => t.team_id === s.team_id)?.team_name}, ${contestants.find(c => c.contestant_id === s.contestant_id)?.display_name}, ${roundsWithEvictions.find(r => r.round_id === s.round_id)?.display_name} - ${s.round_id}`).join("\n")
   // );
 
   // Create and delete submissions in one operation 
   // Must code create_round_submissions in the db
   const res = await supabase.rpc('create_survival_submissions', {the_league_id, survival_records: submissions});
-  console.log("Created Survival Records:", res);
+  // console.log("Created Survival Records:", res);
   
 }
 
@@ -107,19 +113,23 @@ export async function updateRound({round_id, round_number, display_name, deadlin
   console.log("Updated Round:", round);
 }
 
-export async function createRound(season_id: number, formData: FormData) {
+export async function createRound(season_id: number, league_id: number, formData: FormData) {
   "use server";
   const supabase = createClient();
   const round_number = formData.get('round_number') as string;
   const display_name = formData.get('display_name') as string;
-  console.log("Creating Round Args:", {round_number, display_name, season_id});
+  
   const {data: round, error: roundError} = await supabase.from("round").insert({
     round_number: Number(round_number),
     display_name,
     season_id
   }).single();
-  if (roundError || !round) console.error('Error creating round.', roundError);
-  console.log("Created Round:", round);
+  if (roundError) {
+    console.error('Error creating round.', roundError);
+  } else {
+    // This isn't working to refresh the page...
+    revalidatePath(`/league/${league_id}/admin`);
+  }
 }
 
 

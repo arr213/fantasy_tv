@@ -45,7 +45,7 @@ export default async function AdminPage({params}: {params: {league_id: string}})
             <h2 className="text-xl">Rounds</h2>
             <ProcessSurvivalForm league_id={league.id} />
             <DateTimeForm />
-            <AddRoundForm season_id={league.season_id}/>
+            <AddRoundForm season_id={league.season_id} league_id={league.id}/>
           </div>
           <RoundGrid rounds={rounds} contestants={contestants} dateTimePicker={true} />
         </div>

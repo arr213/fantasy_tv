@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
+import { CheckCircle, PersonOff, QuestionMark } from '@mui/icons-material';
 
 export default async function LeagueHomePage({params}: { params: {league_id: string}}) {
     const {league_id} = params;
@@ -130,7 +131,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
     
     const mainColCount = 4 + pendingRounds.length;
     return (
-        <Container className="overflow-x-scroll">
+        <Container className="overflow-x-scroll mb-24">
         <div >
             <header className="flex flex-col justify-between my-5">
                 <h1 className='text-2xl'>Welcome to {league?.league_name}!</h1>
@@ -180,38 +181,28 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                             </td>
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.roundsSurvived}</td>
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.bench.length}</td>
-                            {pendingRounds.map((round, j) => (
-                                <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
-                                    <div>
-                                        <h3 className='text-slate-700 text-sm'>{t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}</h3>
-                                    </div>
-                                </td>
-                            ))}
+                            {pendingRounds.map((round, j) => {
+                                const record = t.records.find(rec => rec.round_id === round.round_id);
+                                let avatar = record?.isMistake 
+                                    ? <PersonOff className="text-red-500 text-2xl" />
+                                    : record?.isCorrect 
+                                        ? <CheckCircle className="text-green-500 text-2xl" />
+                                        : <QuestionMark className="text-slate-700 text-2xl" />
+                                return (
+                                    <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
+                                        <div>
+                                            {avatar}
+                                            {/* <pre>{JSON.stringify(record, null, '\t')}</pre> */}
+                                            <h3 className='text-slate-700 text-sm'>{t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}</h3>
+                                        </div>
+                                    </td>
+                            )})}
                         </tr>
                     )})}
                     </tbody>
                 </table>
             </section>
             
-            {/* {consolationRows.length && (
-                <section className="bg-slate-300 p-6 rounded-lg">
-                    <h1 className='text-2xl mb-5'>Consolation Standings</h1>
-                    <div className='grid grid-cols-4 gap-3'>
-                        <h2 className='text-sm'>#</h2>
-                        <h2 className='text-wrap text-sm'>Manager</h2>
-                        <h2 className='text-wrap text-sm'>Team Name</h2>
-                        <h2 className='text-wrap text-sm'>Mistake Count</h2>
-                        {consolationRows.flatMap((t, i) => (
-                            <>
-                                <h3 key={`rank_${i}`}>{t.rankString}</h3>
-                                <h3 key={`manager_${i}`}>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
-                                <h3 key={`team_name_${i}`}>{t.team_name}</h3>
-                                <h3 key={`mistake_count_${i}`}>{t.mistakeCount}</h3>
-                            </>
-                        ))}
-                    </div>
-                </section>
-            )} */}
             {consolationRows.length > 0 && (
                 <section className="rounded-lg text-center flex flex-col items-start mt-8">
                     <h1 className="text-2xl mb-5 w-100">Consolation Standings</h1>
@@ -221,7 +212,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                                 <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">#</th>
                                 <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Manager</th>
                                 <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Team Name</th>
-                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Mistake Count</th>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Non-Survivor Count</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
