@@ -86,3 +86,51 @@ export async function processSurvivalSubmissions(league_id: number | string){
   console.log("Created Survival Records:", res);
   
 }
+
+
+export async function updateRound({round_id, round_number, display_name, deadline_date_time}: {
+  round_id: number;
+  round_number: number;
+  display_name: string;
+  deadline_date_time: string;
+}) {
+  "use server";
+  const supabase = createClient();
+  console.log("Updating Round Args:", {round_id, round_number, display_name, deadline_date_time});
+  const {data: round, error: roundError} = await supabase.from("round").update({
+    id: round_id,
+    round_number,
+    display_name,
+    deadline_date_time
+  }).eq("id", round_id).single();
+  if (roundError || !round) console.error('Error updating round.', roundError);
+  console.log("Updated Round:", round);
+}
+
+export async function updateEvictedContestant({round_id, evicted_contestant}: {
+  round_id: number;
+  evicted_contestant: number | null;
+}) {
+  "use server";
+  const supabase = createClient();
+  console.log("Updating Evicted Args:", {round_id, evicted_contestant});
+  if (evicted_contestant === null) {
+    const {data: round, error: roundError} = await supabase
+      .from("fantasy_event")
+      .delete()
+      .eq("round_id", round_id)
+      .eq('event_type', 'eviction')
+      .single();
+    if (roundError || !round) console.error('Error updating round.', roundError);
+    console.log("Deleted Round:", round);
+    return;
+  }
+
+  const {data: round, error: roundError} = await supabase.from("fantasy_event").upsert({
+    round_id: round_id,
+    contestant_id: evicted_contestant,
+    event_type: "eviction"
+  }).eq("id", round_id).single();
+  if (roundError || !round) console.error('Error updating round.', roundError);
+  console.log("Updated Round:", round);
+}

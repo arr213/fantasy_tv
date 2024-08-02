@@ -21,26 +21,26 @@ export default async function Layout({children, params
 
     return (
         <>
-            <AppBar position="static" className="bg-blue-900 w-dvw -mt-4">
-                <Toolbar className="flex flex-col md:flex-row md:justify-between lg:w-3/4 mx-auto">
+            <AppBar position="static" className="!bg-blue-900 w-full -mt-4">
+                <Toolbar className="flex flex-col md:flex-row md:justify-between lg:w-3/4 mx-auto color-white">
                     <div className='mt-2'>
-                        <Typography variant="h6" className="text-white mb-2 md:mb-0">
+                        <Typography variant="h6" className="!text-white mb-2 md:mb-0">
                             {league?.league_name}
                         </Typography>
                     </div>
                     <div className="flex space-x-4">
                         <Link href={`/league/${params.league_id}`}>
-                            <Button className="text-white">League Home</Button>
+                            <Button className="!text-white">League Home</Button>
                         </Link>
                         <Link href={`/league/${params.league_id}/my_team`}>
-                            <Button className="text-white">My Team</Button>
+                            <Button className="!text-white">My Team</Button>
                         </Link>
                         <Link href={`/league/${params.league_id}/rules`}>
-                            <Button className="text-white">League Rules</Button>
+                            <Button className="!text-white">League Rules</Button>
                         </Link>
                         {admins && admins.some(a => a.email === user?.email) && (
                             <Link href={`/league/${params.league_id}/admin`}>
-                                <Button className="text-white">Admin</Button>
+                                <Button className="!text-white">Admin</Button>
                             </Link>
                         )}
                     </div>

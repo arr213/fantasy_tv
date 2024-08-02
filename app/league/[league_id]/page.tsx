@@ -1,6 +1,6 @@
 import React from 'react';
 import { createClient } from "@/utils/supabase/server";
-import { Link } from '@mui/material';
+import { Avatar, Container, Link } from '@mui/material';
 import { DateTime } from 'luxon';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
@@ -122,14 +122,16 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
             const row = {...t, rank, rankString: toOrdinal(rank)};
             acc.push(row);
             return acc;
-        }, []);
+        }, [])
+        .filter(t => t.mistakeCount > 0);
 
     const pendingRounds = rounds
         .filter(r => DateTime.fromISO(r.deadline_date_time, {zone: 'America/New_York'}) < DateTime.now() /* && !r.evicted_contestant */)
     
     const mainColCount = 4 + pendingRounds.length;
     return (
-        <div className='p-4 w-dvw overflow-x-scroll'>
+        <Container className="overflow-x-scroll">
+        <div >
             <header className="flex flex-col justify-between my-5">
                 <h1 className='text-2xl'>Welcome to {league?.league_name}!</h1>
                 <p className='text-sm'>
@@ -140,21 +142,34 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                 <h1 className="text-2xl mb-5 w-100">Survival Standings</h1>
                 <table className="min-w-full divide-y divide-gray-200 table-auto border-collapse border border-slate-200">
                     <thead className="bg-gray-50">
-                    <tr>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Team</th>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Rounds Survived</th>
-                        <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Remaining Players</th>
-                        {pendingRounds.map((round, i) => (
-                            <th key={`pending_round_${i}`} scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">
-                                {round.display_name}
-                            </th>
-                        ))}
-                    </tr>
+                        <tr>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Team</th>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Rounds Survived</th>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">Remaining Players</th>
+                            {pendingRounds.map((round, i) => (
+                                <th key={`pending_round_${i}`} scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">
+                                    {round.display_name}
+                                </th>
+                            ))}
+                        </tr>
+                        <tr>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
+                            <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider text-wrap">{' '}</th>
+                            {pendingRounds.map((round, i) => (
+                                <th key={`pending_round_${i}`} scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-700 uppercase tracking-wider text-wrap">
+                                    {contestantMap[round.evicted_contestant]?.display_name|| "TBD"}
+                                </th>
+                            ))}
+                        </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                    {mainRows.map((t, i) => (
-                        <tr key={`row_${i}`} className='even:bg-gray-100 odd:bg-white'>
+                    {mainRows.map((t, i) => {
+                        const rowBackground = t.isStillInGame ? 'even:bg-gray-100 odd:bg-white' : 'even:bg-red-200 odd:bg-red-100';
+                        return (
+                        <tr key={`row_${i}`} className={rowBackground}>
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.rankString}</td>
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
                                 <div>
@@ -166,12 +181,17 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.roundsSurvived}</td>
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.bench.length}</td>
                             {pendingRounds.map((round, j) => (
-                                <td key={`pending_round_${i}_${j}`} className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
-                                {t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}
+                                <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
+                                    <div>
+                                        {/* <div className="w-full flex text-center items-center">
+                                            <Avatar className='h-2 w-2 mx-auto'  />
+                                        </div> */}
+                                        <h3 className='text-slate-700 text-sm'>{t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}</h3>
+                                    </div>
                                 </td>
                             ))}
                         </tr>
-                    ))}
+                    )})}
                     </tbody>
                 </table>
             </section>
@@ -195,9 +215,42 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                     </div>
                 </section>
             )} */}
+            {consolationRows.length > 0 && (
+                <section className="rounded-lg text-center flex flex-col items-start mt-8">
+                    <h1 className="text-2xl mb-5 w-100">Consolation Standings</h1>
+                    <table className="min-w-full divide-y divide-gray-200 table-auto border-collapse border border-slate-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">#</th>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Manager</th>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Team Name</th>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Mistake Count</th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {consolationRows.map((t, i) => {
+                                return (
+                                    <tr key={`consolation_row_${i}`} className="even:bg-gray-100 odd:bg-white">
+                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.rankString}</td>
+                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
+                                            <div>
+                                                <h3 className='text-sm text-wrap'>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
+                                            </div>
+                                        </td>
+                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.team_name}</td>
+                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.mistakeCount}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </section>
+            )}
+
 
 
 
         </div>
+        </Container>
     );
 }

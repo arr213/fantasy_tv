@@ -42,7 +42,7 @@ $$ LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION get_rounds_with_evicted_contestant(the_league_id BIGINT)
+CREATE OR REPLACE FUNCTION get_rounds_with_evictions(the_league_id BIGINT)
 RETURNS TABLE(
     round_id BIGINT,
     season_id BIGINT,
@@ -71,8 +71,11 @@ BEGIN
     JOIN
         public.league l ON s.id = l.season_id
     WHERE
-        l.id = the_league_id;
+        l.id = the_league_id
+    ORDER BY
+        r.round_number ASC;
 END;
+
 $$ LANGUAGE plpgsql;
 
 

@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import { createClient } from "@/utils/supabase/server";
 import ProcessSurvivalForm from "./processForm";
 import RoundGrid from "./roundGrid";
+import DateTimeForm from "./dateTimeForm";
 
 export default async function AdminPage({params}: {params: {league_id: string}}) {
   const supabase = createClient();
@@ -20,6 +21,8 @@ export default async function AdminPage({params}: {params: {league_id: string}})
     debugger;
     return redirect("/");
   }
+  const {data: contestants, error: contestantsError} = await supabase.rpc('get_contestants', {the_league_id: Number(params.league_id)});
+  if (contestantsError || !contestants) console.error('Error getting contestants.', contestantsError);
 
   let {data: rounds, error: roundsError } = await supabase.rpc("get_rounds_with_evictions", {the_league_id: Number(params.league_id)});
   if (!rounds || roundsError) {
@@ -27,7 +30,7 @@ export default async function AdminPage({params}: {params: {league_id: string}})
     rounds = [];
   }
 
-  if (!league) return <></>;
+  if (!league || !contestants) return <></>;
 
   return (
     <div className="w-dvw lg:w-3/4">
@@ -40,9 +43,9 @@ export default async function AdminPage({params}: {params: {league_id: string}})
           <div className="flex gap-4">
             <h2 className="text-xl">Rounds</h2>
             <ProcessSurvivalForm league_id={league.id} />
+            <DateTimeForm />
           </div>
-          
-          <RoundGrid rounds={rounds} />
+          <RoundGrid rounds={rounds} contestants={contestants} dateTimePicker={true} />
         </div>
       </section>
       <section>
