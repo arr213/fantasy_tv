@@ -38,7 +38,7 @@ export default function RulesPage() {
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Shoot the Moon:</h3>
             <ul className="list-disc list-inside mb-4">
-                <li>After a single mistake, you are out of the running for the main prize, but you can compete for the consolation prize.</li>
+                <li>After a single strike, you are out of the running for the main prize, but you can compete for the consolation prize.</li>
                 <li>Each week, you will continue to submit guesses for who is "safe-from-eviction." If you guess the evicted houseguest the most times, you will earn your entry fee back.</li>
                 <li>If a team has no players left to submit, it will not be counted as a point towards the </li>
             </ul>
@@ -46,24 +46,15 @@ export default function RulesPage() {
             <h3 className="text-xl font-semibold mt-4 mb-2">Entry Fee and Prize:</h3>
             <ul className="list-disc list-inside mb-4">
                 <li>The entry fee is $20.</li>
-                <li>There is a $20 consolation prize for the team that makes the most mistakes (i.e., submits the player who gets evicted the most number of times). If there is a tie, the prize will be split.</li>
-                <li>The remaining prize pot will be split among the people who last the longest in the league. If more than one team ties for the longest weeks without a single mistake, those teams will split the pot evenly.</li>
-            </ul>
-            
-            <h3 className="text-xl font-semibold mt-4 mb-2">Weekly Updates:</h3>
-            <p>You will receive weekly emails with updates on:</p>
-            <ul className="list-disc list-inside ml-6">
-                <li>Which teams are still in the running</li>
-                <li>Who they have submitted for the upcoming round</li>
-                <li>How many players each team has left</li>
-                <li>How many mistakes each team has made</li>
+                <li>There is a $20 consolation prize for the team that makes the most strikes (i.e., submits the player who gets evicted the most number of times). If there is a tie, the prize will be split.</li>
+                <li>The remaining prize pot will be split among the people who last the longest in the league. If more than one team ties for the longest weeks without a single strike, those teams will split the pot evenly.</li>
             </ul>
         
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Winner Determination:</h3>
             <ul className="list-disc list-inside mb-4">
                 <li>The team that lasts the longest without being eliminated wins the main prize.</li>
-                <li>The team with the most mistakes (most evicted houseguests) wins the consolation prize.</li>
+                <li>The team with the most strikes wins the consolation prize.</li>
             </ul>
             
             <h2 className="text-2xl font-semibold mt-6 mb-4">Example Cases</h2>
@@ -78,16 +69,16 @@ export default function RulesPage() {
             <ul className="list-disc list-inside mb-4">
                 <li>Week 1: You choose Houseguest A. Houseguest A is not evicted. Your team survives.</li>
                 <li>Week 2: You choose Houseguest C. Houseguest C is not evicted. Your team survives.</li>
-                <li>Week 3: You choose Houseguest D. Houseguest D is evicted. Your team is out for the season from the main prize. You now aim for making the most mistakes.</li>
+                <li>Week 3: You choose Houseguest D. Houseguest D is evicted. Your team is out for the season from the main prize. You now aim for making the most strikes.</li>
             </ul>
             
             <h3 className="text-xl font-semibold mt-4 mb-2">Example 3 (Consolation Prize):</h3>
             <ul className="list-disc list-inside mb-4">
-                <li>Week 1: You choose Houseguest E. Houseguest E is evicted. Mistake count: 1.</li>
-                <li>Week 2: You choose Houseguest F. Houseguest F is evicted. Mistake count: 2.</li>
-                <li>Week 9: You choose Houseguest G. Houseguest G is evicted. Mistake count: 6.</li>
-                <li>Week 10: You have no players left to choose. Mistake count remains 6.</li>
-                <li>You win the consolation prize for having the most mistakes.</li>
+                <li>Week 1: You choose Houseguest E. Houseguest E is evicted. Strike count: 1.</li>
+                <li>Week 2: You choose Houseguest F. Houseguest F is evicted. Strike count: 2.</li>
+                <li>Week 9: You choose Houseguest G. Houseguest G is evicted. Strike count: 6.</li>
+                <li>Week 10: You have no players left to choose. Strike count remains 6.</li>
+                <li>You win the consolation prize for having the most strikes.</li>
             </ul>
             
             <h2 className="text-2xl font-semibold mt-6 mb-4">Frequently Asked Questions</h2>

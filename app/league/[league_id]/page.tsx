@@ -210,9 +210,8 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                         <thead className="bg-gray-50">
                             <tr>
                                 <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">#</th>
-                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Manager</th>
-                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Team Name</th>
-                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Non-Survivor Count</th>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Team</th>
+                                <th scope="col" className="text-center border-collapse border border-slate-200 text-xs md:text-base lg:text-lg font-medium text-gray-500 uppercase tracking-wider">Strike Count</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -222,10 +221,10 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                                         <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.rankString}</td>
                                         <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
                                             <div>
-                                                <h3 className='text-sm text-wrap'>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
+                                                <h3 className='text-sm text-wrap'>{t.team_name}</h3>
+                                                <h3 className='text-slate-500 text-sm'>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
                                             </div>
                                         </td>
-                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.team_name}</td>
                                         <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.mistakeCount}</td>
                                     </tr>
                                 );

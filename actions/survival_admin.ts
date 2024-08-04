@@ -40,6 +40,11 @@ export async function processSurvivalSubmissions(league_id: number | string){
 
   const rounds = lineups.map(l => l.round_number);
 
+  const contestantMap = contestants.reduce((acc, c) => {
+    acc[c.contestant_id] = c;
+    return acc;
+  }, {} as {[key: number]: typeof contestants[0]});
+
   for (let t of teams) {
     let teamSubmissions = [];
     let theLineups = lineupMap[t.team_id]?.sort((a, b) => a.round_number - b.round_number) || [];
@@ -58,6 +63,7 @@ export async function processSurvivalSubmissions(league_id: number | string){
         }));
     }
     for (let l of theLineups) {
+
       let alreadyEliminated = roundsWithEvictions
         .filter(r =>r.round_number < l.round_number)
         .map(r => r.evicted_contestant)
@@ -65,6 +71,20 @@ export async function processSurvivalSubmissions(league_id: number | string){
       let chosenContestantId: number = l.contestant_ids
         .concat(contestants.map(c =>c.contestant_id))
         .filter(c_id => !alreadyEliminated.includes(c_id) && !alreadySubmitted.includes(c_id))[0]
+      if (l.team_id === 15) {
+        console.log(
+          "Round: ", 
+          l.round_number, 
+          "  Chosen:",
+          contestantMap[chosenContestantId].display_name, 
+          " Already Eliminated:",
+          alreadyEliminated.map(c => contestantMap[c]?.display_name), 
+          " Already Submitted:",
+          alreadySubmitted.map(c => contestantMap[c]?.display_name), 
+          " Contestants:",
+          l.contestant_ids.map(c => contestantMap[c]?.display_name)
+        )
+      }
       let newSubmission = {
         round_id: l.round_id,
         team_id: l.team_id,
