@@ -180,3 +180,25 @@ export async function updateEvictedContestant({round_id, evicted_contestant}: {
   if (roundError || !round) console.error('Error updating round.', roundError);
   console.log("Updated Round:", round);
 }
+
+// export async function sendWeeklyUpdateEmail({league_id, round_numbers}: {
+//   league_id: number;
+//   round_numbers: number[];
+// }) {
+//   "use server";
+//   const supabase = createClient();
+//   const [
+//     {data: league, error: leagueError},
+//     {data: rounds, error: roundsError}
+//   ] = await Promise.all([
+//     supabase.from("league").select("*").eq("id", league_id).single(),
+//     supabase.rpc('get_rounds_with_evictions', {the_league_id: league_id})
+//   ]);
+
+//   if (leagueError || !league) console.error('Error getting league.', leagueError);
+//   console.log("Sending Email for League:", league);
+//   // Must create the send_weekly_update_email function in the db
+//   const {data: email, error: emailError} = await supabase.rpc('send_weekly_update_email', {the_league_id: league_id});
+//   if (emailError || !email) console.error('Error sending email.', emailError);
+//   console.log("Sent Email:", email);
+// }
