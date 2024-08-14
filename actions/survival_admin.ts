@@ -63,28 +63,13 @@ export async function processSurvivalSubmissions(league_id: number | string){
         }));
     }
     for (let l of theLineups) {
-
-      let alreadyEliminated = roundsWithEvictions
+      const alreadyEliminated = roundsWithEvictions
         .filter(r =>r.round_number < l.round_number)
         .map(r => r.evicted_contestant)
       let alreadySubmitted = teamSubmissions.map(s => s.contestant_id)
       let chosenContestantId: number = l.contestant_ids
         .concat(contestants.map(c =>c.contestant_id))
         .filter(c_id => !alreadyEliminated.includes(c_id) && !alreadySubmitted.includes(c_id))[0]
-      if (l.team_id === 15) {
-        console.log(
-          "Round: ", 
-          l.round_number, 
-          "  Chosen:",
-          contestantMap[chosenContestantId].display_name, 
-          " Already Eliminated:",
-          alreadyEliminated.map(c => contestantMap[c]?.display_name), 
-          " Already Submitted:",
-          alreadySubmitted.map(c => contestantMap[c]?.display_name), 
-          " Contestants:",
-          l.contestant_ids.map(c => contestantMap[c]?.display_name)
-        )
-      }
       let newSubmission = {
         round_id: l.round_id,
         team_id: l.team_id,
@@ -98,16 +83,6 @@ export async function processSurvivalSubmissions(league_id: number | string){
     submissions.push(...teamSubmissions)
   }
 
-  // console.log(
-  //   "The submissions:", 
-  //   submissions
-  //     .sort((a, b) => a.team_id - b.team_id)
-  //     // .sort(s => s.team_id === 13)
-  //     .map(s => `${teams.find(t => t.team_id === s.team_id)?.team_name}, ${contestants.find(c => c.contestant_id === s.contestant_id)?.display_name}, ${roundsWithEvictions.find(r => r.round_id === s.round_id)?.display_name} - ${s.round_id}`).join("\n")
-  // );
-
-  // Create and delete submissions in one operation 
-  // Must code create_round_submissions in the db
   const res = await supabase.rpc('create_survival_submissions', {the_league_id, survival_records: submissions});
   // console.log("Created Survival Records:", res);
   

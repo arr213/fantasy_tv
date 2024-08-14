@@ -6,6 +6,7 @@ import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
 import { CheckCircle, PersonOff, QuestionMark } from '@mui/icons-material';
+import _ from 'lodash';
 
 export default async function LeagueHomePage({params}: { params: {league_id: string}}) {
     const {league_id} = params;
@@ -81,7 +82,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                 || records.map(tr => tr.evicted_contestant?.contestant_id).includes(c.contestant_id)
             );
         });
-        const roundsSurvived = records.filter(tr => tr.isCorrect).length;
+        const roundsSurvived = _.findIndex(records, tr => !tr.isCorrect);
         const mistakeCount = records.filter(tr => tr.isMistake).length;
         const isStillInGame = !mistakeCount;
         const mainSortString = isStillInGame 
