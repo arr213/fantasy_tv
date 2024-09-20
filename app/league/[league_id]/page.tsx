@@ -68,11 +68,10 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
         const round = rounds.find(r => r.round_id === sr.round_id);
         const contestant = sr.contestant_id ? contestantMap[sr.contestant_id] : null;
         const evicted_contestant = round?.evicted_contestant ? contestantMap[round.evicted_contestant] : null;
-        const isMistake = contestant === evicted_contestant;
+        const isMistake = contestant && (contestant === evicted_contestant);
         const isCorrect = evicted_contestant && contestant?.contestant_id !== evicted_contestant.contestant_id;
         return {...sr, isMistake, isCorrect, round, contestant, evicted_contestant};
     }) || [];
-    console.log("Null Check:", null === null);
 
     const enhancedTeams = teams.map(t => {
         const records = enhancedSurvivalRecords.filter(sr => sr.team_id === t.id);
@@ -190,10 +189,9 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                                         ? <CheckCircle className="text-green-500 text-2xl" />
                                         : <QuestionMark className="text-slate-700 text-2xl" />
                                 return (
-                                    <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
+                                    <td key={round.round_id} className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
                                         <div>
                                             {avatar}
-                                            {/* <pre>{JSON.stringify(record, null, '\t')}</pre> */}
                                             <h3 className='text-slate-700 text-sm'>{t.records.find(rec => rec.round_id === round.round_id)?.contestant?.display_name || ""}</h3>
                                         </div>
                                     </td>

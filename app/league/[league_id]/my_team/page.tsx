@@ -47,7 +47,7 @@ export default async function MyTeam({params}: { params: {league_id: string}}) {
         return !alreadyUsed && !alreadyEvicted;
     });
     lineup = _.uniqBy(lineup, 'contestant_id');
-    console.log(past_submissions)
+    // console.log(past_submissions)
 
     return <div className='flex flex-col gap-4 md:w-3/4 mx-auto justify-center items-center'>
         <div className='flex flex-col p-6 gap-4'>
