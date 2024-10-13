@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 import { AgGridReact } from 'ag-grid-react'; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the Data Grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the Data Grid
-import { CheckCircle, PersonOff, QuestionMark } from '@mui/icons-material';
+import { CheckCircle, ContentPasteSearchTwoTone, PersonOff, QuestionMark } from '@mui/icons-material';
 import _ from 'lodash';
 
 export default async function LeagueHomePage({params}: { params: {league_id: string}}) {
@@ -68,9 +68,13 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
         const round = rounds.find(r => r.round_id === sr.round_id);
         const contestant = sr.contestant_id ? contestantMap[sr.contestant_id] : null;
         const evicted_contestant = round?.evicted_contestant ? contestantMap[round.evicted_contestant] : null;
-        const isMistake = contestant && (contestant === evicted_contestant);
-        const isCorrect = evicted_contestant && contestant?.contestant_id !== evicted_contestant.contestant_id;
-        return {...sr, isMistake, isCorrect, round, contestant, evicted_contestant};
+        const isStrike = !!contestant && (contestant.contestant_id === evicted_contestant?.contestant_id);
+        const isMistake = !!evicted_contestant && (isStrike || !contestant);
+        const isCorrect = !!evicted_contestant && contestant?.contestant_id !== evicted_contestant.contestant_id;
+        // if (evicted_contestant?.contestant_id === 21) {
+        //     debugger;
+        // }
+        return {...sr, isMistake, isStrike, isCorrect, round, contestant, evicted_contestant};
     }) || [];
 
     const enhancedTeams = teams.map(t => {
@@ -81,7 +85,8 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                 || records.map(tr => tr.evicted_contestant?.contestant_id).includes(c.contestant_id)
             );
         });
-        const roundsSurvived = _.findIndex(records, tr => !tr.isCorrect);
+        const roundsSurvived = _.findIndex(records, tr => tr.isMistake) + 1;
+        const strikeCount = records.filter(tr => tr.isStrike).length;
         const mistakeCount = records.filter(tr => tr.isMistake).length;
         const isStillInGame = !mistakeCount;
         const mainSortString = isStillInGame 
@@ -89,7 +94,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
             : `0_${roundsSurvived.toString().padStart(3, '0')}`
         ;
         const consolationSortString = `${mistakeCount.toString().padStart(3, '0')}`;
-        return {...t, records, bench, roundsSurvived, mistakeCount, isStillInGame, mainSortString, consolationSortString};
+        return {...t, records, bench, roundsSurvived, strikeCount, mistakeCount, isStillInGame, mainSortString, consolationSortString};
     });
     type EnhancedTeam = typeof enhancedTeams[0];
     type TeamWithRank = EnhancedTeam & { rank: number; rankString: string; };
@@ -168,7 +173,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                     {mainRows.map((t, i) => {
-                        const rowBackground = t.isStillInGame ? 'even:bg-gray-100 odd:bg-white' : 'even:bg-red-200 odd:bg-red-100';
+                        const rowBackground = (t.isStillInGame || t.rank === 1) ? 'even:bg-gray-100 odd:bg-white' : 'even:bg-red-200 odd:bg-red-100';
                         return (
                         <tr key={`row_${i}`} className={rowBackground}>
                             <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.rankString}</td>
@@ -187,7 +192,10 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                                     ? <PersonOff className="text-red-500 text-2xl" />
                                     : record?.isCorrect 
                                         ? <CheckCircle className="text-green-500 text-2xl" />
-                                        : <QuestionMark className="text-slate-700 text-2xl" />
+                                        : <QuestionMark className="text-slate-700 text-2xl" />;
+                                if (!record?.contestant) {
+                                    avatar = <PersonOff className="text-black text-2xl" />
+                                }
                                 return (
                                     <td key={round.round_id} className="border-collapse border border-slate-200 py-4 whitespace-nowrap">
                                         <div>
@@ -224,7 +232,7 @@ export default async function LeagueHomePage({params}: { params: {league_id: str
                                                 <h3 className='text-slate-500 text-sm'>{t.app_user?.first_name} {t.app_user?.last_name}</h3>
                                             </div>
                                         </td>
-                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.mistakeCount}</td>
+                                        <td className="border-collapse border border-slate-200 py-4 whitespace-nowrap">{t.strikeCount}</td>
                                     </tr>
                                 );
                             })}
